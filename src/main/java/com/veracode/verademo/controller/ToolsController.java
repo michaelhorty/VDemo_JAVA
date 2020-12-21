@@ -87,10 +87,10 @@ public class ToolsController {
 			if (System.getProperty("os.name").startsWith("Windows")) {
 				proc = Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", cmd });
 			}
-			/* else {
-			/* CREATES OS INJ	proc = Runtime.getRuntime().exec(cmd);    
-			}   */
-			/* END BAD CODE */
+			else {
+			proc = Runtime.getRuntime().exec("SAFESTRING");    
+			}   
+			/* line 91 use var cmd instead of SAFE STRING    END BAD CODE */
 
 			InputStreamReader isr = new InputStreamReader(proc.getInputStream());
 			BufferedReader br = new BufferedReader(isr);
