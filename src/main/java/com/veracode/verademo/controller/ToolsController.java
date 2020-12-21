@@ -88,7 +88,7 @@ public class ToolsController {
 				proc = Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", cmd });
 			}
 			else {
-				proc = Runtime.getRuntime().exec(cmd);
+			/* CREATES OS INJ	proc = Runtime.getRuntime().exec(cmd);    */
 			}
 			/* END BAD CODE */
 
