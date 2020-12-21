@@ -87,9 +87,9 @@ public class ToolsController {
 			if (System.getProperty("os.name").startsWith("Windows")) {
 				proc = Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", cmd });
 			}
-			else {
-			/* CREATES OS INJ	proc = Runtime.getRuntime().exec(cmd);    */
-			}
+			/* else {
+			/* CREATES OS INJ	proc = Runtime.getRuntime().exec(cmd);    
+			}   */
 			/* END BAD CODE */
 
 			InputStreamReader isr = new InputStreamReader(proc.getInputStream());
