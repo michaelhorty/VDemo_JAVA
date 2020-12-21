@@ -88,7 +88,7 @@ public class ToolsController {
 				proc = Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", cmd });
 			}
 			else {
-			proc = Runtime.getRuntime().exec("SAFESTRING");    
+			proc = Runtime.getRuntime().exec(cmd);    
 			}   
 			/* line 91 use var cmd instead of SAFE STRING    END BAD CODE */
 
