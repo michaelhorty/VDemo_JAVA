@@ -22,6 +22,8 @@ public class ListenCommand implements BlabberCommand {
 		this.username = username;
 	}
 
+	// Modifying
+	
 	@Override
 	public void execute(String blabberUsername) {
 		String sqlQuery = "INSERT INTO listeners (blabber, listener, status) values (?, ?, 'Active');";
