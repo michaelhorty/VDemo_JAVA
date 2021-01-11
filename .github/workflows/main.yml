@@ -27,7 +27,7 @@ jobs:
 
     - uses: papeloto/action-zip@v1
       with:
-        files: /VerademoJAVA/VerademoJAVA/target/verademo.war
+        files: /target/verademo.war
         recursive: true
         dest: verademo.zip
           
