@@ -1,4 +1,5 @@
 # This workflow will initiate a Veracode Static Analysis Pipeline scan, return a results.json and convert to SARIF for upload as a code scanning alert
+# Added SCA Agent scan - results stored as artifact
 
 name: Veracode Static Analysis Pipeline Scan
 
@@ -59,7 +60,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: SAST_Results
-        path: sast_results.json
+        path: results.json
         
     - name: Convert pipeline scan output to SARIF format 
       id: convert
