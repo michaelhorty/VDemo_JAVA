@@ -61,7 +61,8 @@ jobs:
       with:
         # Path to SARIF file relative to the root of the repository
         sarif_file: veracode-results.sarif
-    - run: curl -sSL -N https://download.sourceclear.com/ci.sh | sh --json sca_results.json --loud
+    - run: curl -sSL https://srcclr.com/install | sh
+    - run: srcclr scan --json scaresults.json
     - uses: actions/upload-artifact@v1
       with:
         name: SCAResults
