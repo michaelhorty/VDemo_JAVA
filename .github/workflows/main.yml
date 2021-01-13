@@ -63,7 +63,7 @@ jobs:
         sarif_file: veracode-results.sarif
     - run: curl -sSL https://srcclr.com/install | sh
     - run: export SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}"
-    - run: srcclr scan --json scaresults.json
+    - run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --json scaresults.json
     - uses: actions/upload-artifact@v1
       with:
         name: SCAResults
