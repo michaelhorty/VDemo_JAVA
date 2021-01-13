@@ -23,37 +23,44 @@ jobs:
       with:
         repository: ''
 
-    - run: mvn clean install
+    - name: Build using Maven 
+      run: mvn clean install
 
-    - uses: papeloto/action-zip@v1
+    - name: Zip up scanning artifact
+      uses: papeloto/action-zip@v1
       with:
         files: /target/verademo.war
         recursive: true
         dest: verademo.zip
-          
-    - uses: actions/upload-artifact@v1
+    
+    - name: Store scanning artifact as Artifact
+      uses: actions/upload-artifact@v1
       with:
         name: my-artifact
         path: verademo.zip
     
-    # download the Veracode Static Analysis Pipeline scan jar
-    - uses: wei/curl@master
+    - name: Downloading Pipeline Scan CLI
+      uses: wei/curl@master
       with:
         args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+    
     - run: unzip -o pipeline-scan-LATEST.zip
     
-    - uses: actions/setup-java@v1
+    - name: Setting up Java
+      uses: actions/setup-java@v1
       with:
         java-version: 1.8
     
-    - run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file verademo.zip
+    - name: Running SAST scan
+      run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file verademo.zip
       continue-on-error: true
-    - uses: actions/upload-artifact@v1
+    
+    - name: Store SAST results as Artifact
+      uses: actions/upload-artifact@v1
       with:
         name: SAST_Results
         path: sast_results.json
-    
-    
+        
     - name: Convert pipeline scan output to SARIF format 
       id: convert
       uses: veracode/veracode-pipeline-scan-results-to-sarif@master
@@ -61,16 +68,20 @@ jobs:
         pipeline-results-json: sast_results.json
         source-base-path-1: "com/:src/main/java/com/"
     
-    
-    - uses: github/codeql-action/upload-sarif@v1
+    - name: Push SARIF to GitHub
+      uses: github/codeql-action/upload-sarif@v1
       with:
         # Path to SARIF file relative to the root of the repository
         sarif_file: veracode-results.sarif
         
-    - run: curl -sSL https://srcclr.com/install | sh
-        DisplayName:Running SCA Agent
-    - run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws QmmUMb6 >> scaresults.txt
-    - uses: actions/upload-artifact@v1
+    - name: Download SCA Agent
+      run: curl -sSL https://srcclr.com/install | sh
+    
+    - name: Running SCA Scan
+      run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws QmmUMb6 >> scaresults.txt
+    
+    - name: Store SCA results as Artifact
+      uses: actions/upload-artifact@v1
       with:
         name: SCA_Results
         path: sca_results.txt
