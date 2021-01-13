@@ -66,7 +66,7 @@ jobs:
       id: convert
       uses: veracode/veracode-pipeline-scan-results-to-sarif@master
       with:
-        pipeline-results-json: sast_results.json
+        pipeline-results-json: results.json
         source-base-path-1: "com/:src/main/java/com/"
     
     - name: Push SARIF to GitHub
