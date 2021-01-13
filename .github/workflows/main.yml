@@ -14,13 +14,14 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a job to build and submit pipeline scan, you will need to customize the build process accordingly and make sure the artifact you build is used as the file input to the pipeline scan file parameter
-  build-and-pipeline-scan:
+  Build-SAST-SCA:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
     
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it and copies all sources into ZIP file for submitting for analysis. Replace this section with your applications build steps
-    - uses: actions/checkout@v2
+    - name: Repo check-out
+      uses: actions/checkout@v2
       with:
         repository: ''
 
@@ -34,7 +35,7 @@ jobs:
         recursive: true
         dest: verademo.zip
     
-    - name: Store scanning artifact as Artifact
+    - name: Store scanning artifact as Build Artifact
       uses: actions/upload-artifact@v1
       with:
         name: my-artifact
@@ -56,7 +57,7 @@ jobs:
       run: java -jar pipeline-scan.jar --veracode_api_id "${{secrets.VERACODE_API_ID}}" --veracode_api_key "${{secrets.VERACODE_API_KEY}}" --fail_on_severity="Very High, High" --file verademo.zip
       continue-on-error: true
     
-    - name: Store SAST results as Artifact
+    - name: Store SAST results as Build Artifact
       uses: actions/upload-artifact@v1
       with:
         name: SAST_Results
@@ -79,9 +80,9 @@ jobs:
       run: curl -sSL https://srcclr.com/install | sh
     
     - name: Running SCA Scan
-      run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws QmmUMb6 >> scaresults.txt
+      run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws QmmUMb6 >> sca_results.txt
     
-    - name: Store SCA results as Artifact
+    - name: Store SCA results as Build Artifact
       uses: actions/upload-artifact@v1
       with:
         name: SCA_Results
