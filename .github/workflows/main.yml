@@ -1,17 +1,13 @@
-# This workflow will initiate a Veracode Static Analysis Pipeline scan, return a results.json and convert to SARIF for upload as a code scanning alert
-# Added SCA Agent scan - results stored as artifact
+# This workflow runs both a SAST 'pipeline scan' and SCA scan in parallel
 
 name: Veracode Static Analysis Pipeline Scan
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a job to build and submit pipeline scan, you will need to customize the build process accordingly and make sure the artifact you build is used as the file input to the pipeline scan file parameter
   Build-and-Run-SAST-scan:
@@ -38,7 +34,7 @@ jobs:
     - name: Store scanning artifact as Build Artifact
       uses: actions/upload-artifact@v1
       with:
-        name: my-artifact
+        name: SAST Scan Artifact
         path: verademo.zip
     
     - name: Downloading Pipeline Scan CLI
@@ -46,7 +42,8 @@ jobs:
       with:
         args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
     
-    - run: unzip -o pipeline-scan-LATEST.zip
+    - name: Unzip Pipeline Scan CLI
+      run: unzip -o pipeline-scan-LATEST.zip
     
     - name: Setting up Java
       uses: actions/setup-java@v1
