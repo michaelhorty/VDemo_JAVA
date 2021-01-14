@@ -86,7 +86,7 @@ jobs:
       run: curl -sSL https://srcclr.com/install | sh
     
     - name: Running SCA Scan
-      run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws QmmUMb6 >> sca_results.txt
+      run: SRCCLR_API_TOKEN="${{secrets.SRCCLR_API_TOKEN}}" srcclr scan --ws "${{secrets.SRCCLR_WS_ID}}" >> sca_results.txt
     
     - name: Store SCA results as Build Artifact
       uses: actions/upload-artifact@v1
